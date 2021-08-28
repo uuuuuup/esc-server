@@ -16,10 +16,6 @@ export class User extends MyBaseObject {
   @Column()
   email: string;
 
-  @Field(() => String)
-  @Column()
-  name: string;
-
   @Field(() => UserRole)
   @Column({ type: 'enum', enum: UserRole })
   role: UserRole;

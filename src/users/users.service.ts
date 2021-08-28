@@ -24,7 +24,7 @@ export class UsersService {
     try {
       const { accessToken } = signUpInput;
       const {
-        data: { name, email },
+        data: { name, email, picture },
       } = await axios.get(
         'https://www.googleapis.com/oauth2/v2/userinfo?access_token=' +
           accessToken,
@@ -35,13 +35,13 @@ export class UsersService {
       }
 
       const newUser = await this.userRepository.save(
-        this.userRepository.create({ name, email, role: UserRole.User }),
+        this.userRepository.create({ email, role: UserRole.User }),
       );
       const token = await jwt.sign(
         { id: newUser.id, role: newUser.role },
         this.configService.get('PRIVATE_KEY'),
       );
-      return { ok: true, token, user: newUser };
+      return { ok: true, token, profile: { name, email, picture } };
     } catch (error) {
       return { ok: false, error: 'error occurred' };
     }
@@ -51,7 +51,7 @@ export class UsersService {
     try {
       const { accessToken } = signInInput;
       const {
-        data: { email },
+        data: { name, email, picture },
       } = await axios.get(
         'https://www.googleapis.com/oauth2/v2/userinfo?access_token=' +
           accessToken,
@@ -65,7 +65,7 @@ export class UsersService {
         { id: user.id, role: user.role },
         this.configService.get('PRIVATE_KEY'),
       );
-      return { ok: true, token, user };
+      return { ok: true, token, profile: { name, email, picture } };
     } catch (error) {
       return { ok: false, error: 'error occurred' };
     }
