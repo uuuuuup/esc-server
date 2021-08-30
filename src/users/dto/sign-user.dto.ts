@@ -1,7 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { MyBaseOutput } from 'src/common/MyBase.dto';
 import { Column } from 'typeorm';
-import { User } from '../entities/user.entity';
 
 @ObjectType()
 export class Profile {
